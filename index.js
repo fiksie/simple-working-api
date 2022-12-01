@@ -1,25 +1,21 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
+const express = require("express");
+const app = express();
 
-var serviceAccount = require("permission");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+const cors = require("cors");
+app.use(cors({origin: true}));
+
+// Routes
+app.get('/hello-world', (req, res) => {
+    return res.status(200).send('Hello World!');
 });
 
-const express = require('express');
-const app = express();
-const db = admin.firestore();
-
-const cors = require('cors');
-app.use( cors({origin: true}));
-
-//Create
-//post
+// Create
+// post
 
 app.get('/api/create', (req, res) => {
     (async () => {
-        try {
+        try{
             await db.collection('products').doc('/' + req.body.id + '/')
             .create({
                 name: req.body.name,
@@ -35,11 +31,11 @@ app.get('/api/create', (req, res) => {
     })();
 });
 
-//Read
-//get
+// Read
+// get
 
-//Update
-//put
+// Update
+// put
 
-//Delete
-//delete
+// Delete
+// delete
