@@ -1,41 +1,38 @@
 const express = require("express");
 const app = express();
-
+const PORT = 8000;
 
 const cors = require("cors");
+const { res, req } = require("express");
 app.use(cors({origin: true}));
 
-// Routes
-app.get('/hello-world', (req, res) => {
-    return res.status(200).send('Hello World!');
-});
+const rappers = {
+    "catch 22": {
+        "age": 28,
+        "birthName": "Shiya Bylylaja",
+        "birthPlace": "London, England"
+    },
+    "unknown": {
+        "age": 0,
+        "birthName": "unknown",
+        "birthPlace": "unknown"
+    }
+}
 
-// Create
-// post
+app.get('/', (req,res)=>{
+    res.sendFile(__dirname + '/index.html');
+})
 
-app.get('/api/create', (req, res) => {
-    (async () => {
-        try{
-            await db.collection('products').doc('/' + req.body.id + '/')
-            .create({
-                name: req.body.name,
-                description: req.body.description,
-                price: req.body.price
-            })
-            return res.status(200).send();
-        }
-        catch{
-            console.log(error);
-            return res.status(500).send(error);
-        }
-    })();
-});
+app.get('/api/:name', (req,res)=>{
+    const rapperName = req.params.name.toLowerCase();
+    if(rappers[rapperName]){
+        res.json(rappers[rapperName]);
+    }else{
+        res.json(rappers[unknown]);
+    }
+})
 
-// Read
-// get
+app.listen(PORT, () =>{
+    console.log(`The server is running on PORT ${PORT}. You better go catch it!`);
 
-// Update
-// put
-
-// Delete
-// delete
+})
